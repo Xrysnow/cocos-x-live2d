@@ -5,9 +5,6 @@
 #include "CubismRenderer_CC.h"
 #include "L2DModel.h"
 #include "cocos2d.h"
-#if CSM_RENDERER_EXT
-#include "renderer/backend/Device.h"
-#endif
 
 using namespace l2d;
 using namespace cocos2d;
@@ -39,11 +36,6 @@ bool Framework::_init()
 		return false;
 	}
 	CubismFramework::Initialize();
-#if CSM_RENDERER_EXT
-	auto exts = (char*)backend::Device::getInstance()->getDeviceInfo()->getExtension();
-	if (strstr(exts, "GL_NV_shader_framebuffer_fetch "))
-		Rendering::CubismRenderer_CC::SetExtShaderMode(true, true);
-#endif
 
 	L2DRecreatedListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [](EventCustom*)
 	{

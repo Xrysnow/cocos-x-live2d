@@ -5,7 +5,6 @@
 #include <cstring>
 #include <vector>
 
-#ifdef CC_USE_GFX
 #include "renderer/backend/gfx/DeviceGFX.h"
 using Type = cocos2d::backend::DeviceGFX::Type;
 using Uniform = cocos2d::backend::DeviceGFX::Uniform;
@@ -16,7 +15,6 @@ using UniformSamplerTexture = cocos2d::backend::DeviceGFX::UniformSamplerTexture
 using UniformSamplerTextureList = cocos2d::backend::DeviceGFX::UniformSamplerTextureList;
 using Attribute = cocos2d::backend::DeviceGFX::Attribute;
 using AttributeList = cocos2d::backend::DeviceGFX::AttributeList;
-#endif
 
 #define CSM_SAFE_DELETE_NULL(p) do { if(p) {CSM_DELETE(p); p = nullptr;} } while (false)
 
@@ -725,32 +723,8 @@ void CubismShader_CC::ReleaseShaderProgram()
 	}
 }
 
-#if defined(CC_PLATFORM_MOBILE)
-#define FRAG_SHADER_HEADER "#version 100\nprecision mediump float;\n"
-#define VERT_SHADER_HEADER "#version 100\n"
-#else
-#define FRAG_SHADER_HEADER "#version 120\n"
-#define VERT_SHADER_HEADER "#version 120\n"
-#endif
-
 // SetupMask
 static const csmChar* VertShaderSrcSetupMask =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"attribute vec2 a_position;"
-	"attribute vec2 a_texCoord;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_myPos;"
-	"uniform mat4 u_clipMatrix;"
-	"void main()"
-	"{"
-	"vec4 pos = vec4(a_position.x, a_position.y, 0.0, 1.0);"
-	"gl_Position = u_clipMatrix * pos;"
-	"v_myPos = u_clipMatrix * pos;"
-	"v_texCoord = a_texCoord;"
-	"v_texCoord.y = 1.0 - v_texCoord.y;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 a_position;
 layout(location=1) in vec2 a_texCoord;
@@ -777,27 +751,8 @@ static const UniformBlock VertShaderSrcSetupMaskBlock = {
 	}),
 	1
 };
-#endif
 
 static const csmChar* FragShaderSrcSetupMask =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_myPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"void main()"
-	"{"
-	"float isInside = "
-	"  step(u_baseColor.x, v_myPos.x/v_myPos.w)"
-	"* step(u_baseColor.y, v_myPos.y/v_myPos.w)"
-	"* step(v_myPos.x/v_myPos.w, u_baseColor.z)"
-	"* step(v_myPos.y/v_myPos.w, u_baseColor.w);"
-
-	"gl_FragColor = u_channelFlag * texture2D(s_texture0 , v_texCoord).a * isInside;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec4 v_myPos;
 layout(location=1) in vec2 v_texCoord;
@@ -831,46 +786,10 @@ static const UniformSamplerTextureList FragShaderSrcSetupMaskTextures = {
 	UniformSamplerTexture {
 		0,2,"s_texture0",Type::SAMPLER2D,1}
 };
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcSetupMaskTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_myPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"void main()"
-	"{"
-	"float isInside = "
-	"  step(u_baseColor.x, v_myPos.x/v_myPos.w)"
-	"* step(u_baseColor.y, v_myPos.y/v_myPos.w)"
-	"* step(v_myPos.x/v_myPos.w, u_baseColor.z)"
-	"* step(v_myPos.y/v_myPos.w, u_baseColor.w);"
-
-	"gl_FragColor = u_channelFlag * texture2D(s_texture0 , v_texCoord).a * isInside;"
-	"}";
-#endif
 
 //----- バーテックスシェーダプログラム -----
 // Normal & Add & Mult 共通
 static const csmChar* VertShaderSrc =
-#ifndef CC_USE_GFX
-	VERT_SHADER_HEADER
-	"attribute vec2 a_position;" //v.vertex
-	"attribute vec2 a_texCoord;" //v.texcoord
-	"varying vec2 v_texCoord;" //v2f.texcoord
-	"uniform mat4 u_matrix;"
-	"void main()"
-	"{"
-	"vec4 pos = vec4(a_position.x, a_position.y, 0.0, 1.0);"
-	"gl_Position = u_matrix * pos;"
-	"v_texCoord = a_texCoord;"
-	"v_texCoord.y = 1.0 - v_texCoord.y;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 a_position;
 layout(location=1) in vec2 a_texCoord;
@@ -895,26 +814,8 @@ static const UniformBlock VertShaderSrcBlock = {
 	}),
 	1
 };
-#endif
 // Normal & Add & Mult 共通（クリッピングされたものの描画用）
 static const csmChar* VertShaderSrcMasked =
-#ifndef CC_USE_GFX
-	VERT_SHADER_HEADER
-	"attribute vec2 a_position;"
-	"attribute vec2 a_texCoord;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform mat4 u_matrix;"
-	"uniform mat4 u_clipMatrix;"
-	"void main()"
-	"{"
-	"vec4 pos = vec4(a_position.x, a_position.y, 0.0, 1.0);"
-	"gl_Position = u_matrix * pos;"
-	"v_clipPos = u_clipMatrix * pos;"
-	"v_texCoord = a_texCoord;"
-	"v_texCoord.y = 1.0 - v_texCoord.y;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 a_position;
 layout(location=1) in vec2 a_texCoord;
@@ -943,26 +844,9 @@ static const UniformBlock VertShaderSrcMaskedBlock = {
 	}),
 	1
 };
-#endif
 //----- フラグメントシェーダプログラム -----
 // Normal & Add & Mult 共通
 static const csmChar* FragShaderSrc =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;" //v2f.texcoord
-	"uniform sampler2D s_texture0;" //_MainTex
-	"uniform vec4 u_baseColor;" //v2f.color
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 color = texColor * u_baseColor;"
-	"gl_FragColor = vec4(color.rgb * color.a, color.a);"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(std140, binding=1) uniform FSBlock
@@ -996,44 +880,9 @@ static const UniformSamplerTextureList FragShaderSrcTextures = {
 	UniformSamplerTexture {
 		0,2,"s_texture0",Type::SAMPLER2D,1}
 };
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;" //v2f.texcoord
-	"uniform sampler2D s_texture0;" //_MainTex
-	"uniform vec4 u_baseColor;" //v2f.color
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 color = texColor * u_baseColor;"
-	"gl_FragColor = vec4(color.rgb * color.a, color.a);"
-	"}";
-#endif
 
 // Normal & Add & Mult 共通 （PremultipliedAlpha）
 static const csmChar* FragShaderSrcPremultipliedAlpha =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;" //v2f.texcoord
-	"uniform sampler2D s_texture0;" //_MainTex
-	"uniform vec4 u_baseColor;" //v2f.color
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"gl_FragColor = texColor * u_baseColor;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(std140, binding=1) uniform FSBlock
@@ -1053,51 +902,9 @@ void main()
 	cc_FragColor = texColor * u_baseColor;
 }
 )";
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcPremultipliedAlphaTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;" //v2f.texcoord
-	"uniform sampler2D s_texture0;" //_MainTex
-	"uniform vec4 u_baseColor;" //v2f.color
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"	
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"gl_FragColor = texColor * u_baseColor;"
-	"}";
-#endif
 
 // Normal & Add & Mult 共通（クリッピングされたものの描画用）
 static const csmChar* FragShaderSrcMask =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"col_formask.rgb = col_formask.rgb * col_formask.a ;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * maskVal;"
-	"gl_FragColor = col_formask;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(location=1) in vec4 v_clipPos;
@@ -1141,59 +948,9 @@ static const UniformSamplerTextureList FragShaderSrcMaskTextures = {
 	UniformSamplerTexture {
 		0,3,"s_texture1",Type::SAMPLER2D,1}
 };
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcMaskTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"col_formask.rgb = col_formask.rgb  * col_formask.a ;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * maskVal;"
-	"gl_FragColor = col_formask;"
-	"}";
-#endif
 
 // Normal & Add & Mult 共通（クリッピングされて反転使用の描画用）
 static const csmChar* FragShaderSrcMaskInverted =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"col_formask.rgb = col_formask.rgb * col_formask.a ;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * (1.0 - maskVal);"
-	"gl_FragColor = col_formask;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(location=1) in vec4 v_clipPos;
@@ -1221,58 +978,9 @@ void main()
 	cc_FragColor = col_formask;
 }
 )";
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcMaskInvertedTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = texColor.rgb + u_screenColor.rgb - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"col_formask.rgb = col_formask.rgb  * col_formask.a ;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * (1.0 - maskVal);"
-	"gl_FragColor = col_formask;"
-	"}";
-#endif
 
 // Normal & Add & Mult 共通（クリッピングされたものの描画用、PremultipliedAlphaの場合）
 static const csmChar* FragShaderSrcMaskPremultipliedAlpha =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * maskVal;"
-	"gl_FragColor = col_formask;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(location=1) in vec4 v_clipPos;
@@ -1299,57 +1007,9 @@ void main()
 	cc_FragColor = col_formask;
 }
 )";
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcMaskPremultipliedAlphaTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * maskVal;"
-	"gl_FragColor = col_formask;"
-	"}";
-#endif
 
 // Normal & Add & Mult 共通（クリッピングされて反転使用の描画用、PremultipliedAlphaの場合）
 static const csmChar* FragShaderSrcMaskInvertedPremultipliedAlpha =
-#ifndef CC_USE_GFX
-	FRAG_SHADER_HEADER
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * (1.0 - maskVal);"
-	"gl_FragColor = col_formask;"
-	"}";
-#else
 	R"(
 layout(location=0) in vec2 v_texCoord;
 layout(location=1) in vec4 v_clipPos;
@@ -1376,32 +1036,6 @@ void main()
 	cc_FragColor = col_formask;
 }
 )";
-#endif
-#if CSM_RENDERER_EXT
-static const csmChar* FragShaderSrcMaskInvertedPremultipliedAlphaTegra =
-	"#version 100\n"
-	"#extension GL_NV_shader_framebuffer_fetch : enable\n"
-	"precision mediump float;"
-	"varying vec2 v_texCoord;"
-	"varying vec4 v_clipPos;"
-	"uniform sampler2D s_texture0;"
-	"uniform sampler2D s_texture1;"
-	"uniform vec4 u_channelFlag;"
-	"uniform vec4 u_baseColor;"
-	"uniform vec4 u_multiplyColor;"
-	"uniform vec4 u_screenColor;"
-	"void main()"
-	"{"
-	"vec4 texColor = texture2D(s_texture0 , v_texCoord);"
-	"texColor.rgb = texColor.rgb * u_multiplyColor.rgb;"
-	"texColor.rgb = (texColor.rgb + u_screenColor.rgb * texColor.a) - (texColor.rgb * u_screenColor.rgb);"
-	"vec4 col_formask = texColor * u_baseColor;"
-	"vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;"
-	"float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;"
-	"col_formask = col_formask * (1.0 - maskVal);"
-	"gl_FragColor = col_formask;"
-	"}";
-#endif
 
 CubismShader_CC::CubismShader_CC()
 { }
@@ -1429,16 +1063,6 @@ void CubismShader_CC::DeleteInstance()
 	}
 }
 
-#if CSM_RENDERER_EXT
-csmBool CubismShader_CC::s_extMode = false;
-csmBool CubismShader_CC::s_extPAMode = false;
-void CubismShader_CC::SetExtShaderMode(csmBool extMode, csmBool extPAMode) {
-	s_extMode = extMode;
-	s_extPAMode = extPAMode;
-}
-#endif
-
-#ifdef CC_USE_GFX
 static cocos2d::backend::Program* LoadGFXProgram(
 	const std::string& name,
 	const std::string& vs, const std::string& fs,
@@ -1462,7 +1086,6 @@ static cocos2d::backend::Program* LoadGFXProgram(
 	info.samplerTextures = textures;
 	return device->newProgram(info);
 }
-#endif
 
 void CubismShader_CC::GenerateShaders()
 {
@@ -1471,58 +1094,6 @@ void CubismShader_CC::GenerateShaders()
 		_shaderSets.PushBack(CSM_NEW CubismShaderSet());
 	}
 
-#if CSM_RENDERER_EXT
-	if (s_extMode)
-	{
-		_shaderSets[0]->ShaderProgram = LoadShaderProgram(VertShaderSrcSetupMask, FragShaderSrcSetupMaskTegra);
-
-		_shaderSets[1]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrcTegra);
-		_shaderSets[2]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskTegra);
-		_shaderSets[3]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInvertedTegra);
-		_shaderSets[4]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrcPremultipliedAlphaTegra);
-		_shaderSets[5]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskPremultipliedAlphaTegra);
-		_shaderSets[6]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInvertedPremultipliedAlphaTegra);
-	}
-	else
-	{
-		_shaderSets[0]->ShaderProgram = LoadShaderProgram(VertShaderSrcSetupMask, FragShaderSrcSetupMask);
-
-		_shaderSets[1]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrc);
-		_shaderSets[2]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMask);
-		_shaderSets[3]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInverted);
-		_shaderSets[4]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrcPremultipliedAlpha);
-		_shaderSets[5]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskPremultipliedAlpha);
-		_shaderSets[6]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInvertedPremultipliedAlpha);
-	}
-
-	// 加算も通常と同じシェーダーを利用する
-	_shaderSets[7]->ShaderProgram = _shaderSets[1]->ShaderProgram;
-	_shaderSets[8]->ShaderProgram = _shaderSets[2]->ShaderProgram;
-	_shaderSets[9]->ShaderProgram = _shaderSets[3]->ShaderProgram;
-	_shaderSets[10]->ShaderProgram = _shaderSets[4]->ShaderProgram;
-	_shaderSets[11]->ShaderProgram = _shaderSets[5]->ShaderProgram;
-	_shaderSets[12]->ShaderProgram = _shaderSets[6]->ShaderProgram;
-
-	// 乗算も通常と同じシェーダーを利用する
-	_shaderSets[13]->ShaderProgram = _shaderSets[1]->ShaderProgram;
-	_shaderSets[14]->ShaderProgram = _shaderSets[2]->ShaderProgram;
-	_shaderSets[15]->ShaderProgram = _shaderSets[3]->ShaderProgram;
-	_shaderSets[16]->ShaderProgram = _shaderSets[4]->ShaderProgram;
-	_shaderSets[17]->ShaderProgram = _shaderSets[5]->ShaderProgram;
-	_shaderSets[18]->ShaderProgram = _shaderSets[6]->ShaderProgram;
-
-#else
-
-#ifndef CC_USE_GFX
-	_shaderSets[0]->ShaderProgram = LoadShaderProgram(VertShaderSrcSetupMask, FragShaderSrcSetupMask);
-
-	_shaderSets[1]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrc);
-	_shaderSets[2]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMask);
-	_shaderSets[3]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInverted);
-	_shaderSets[4]->ShaderProgram = LoadShaderProgram(VertShaderSrc, FragShaderSrcPremultipliedAlpha);
-	_shaderSets[5]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskPremultipliedAlpha);
-	_shaderSets[6]->ShaderProgram = LoadShaderProgram(VertShaderSrcMasked, FragShaderSrcMaskInvertedPremultipliedAlpha);
-#else
 	_shaderSets[0]->ShaderProgram = LoadGFXProgram(
 		"CSM_Shader0", 
 		VertShaderSrcSetupMask, FragShaderSrcSetupMask,
@@ -1558,7 +1129,6 @@ void CubismShader_CC::GenerateShaders()
 		VertShaderSrcMasked, FragShaderSrcMaskInvertedPremultipliedAlpha,
 		VertShaderSrcMaskedBlock, FragShaderSrcMaskBlock,
 		FragShaderSrcMaskTextures);
-#endif
 
 	// 加算も通常と同じシェーダーを利用する
 	_shaderSets[7]->ShaderProgram = _shaderSets[1]->ShaderProgram;
@@ -1575,7 +1145,6 @@ void CubismShader_CC::GenerateShaders()
 	_shaderSets[16]->ShaderProgram = _shaderSets[4]->ShaderProgram;
 	_shaderSets[17]->ShaderProgram = _shaderSets[5]->ShaderProgram;
 	_shaderSets[18]->ShaderProgram = _shaderSets[6]->ShaderProgram;
-#endif
 
 	for (int i = 0; i <= 18; ++i)
 	{
@@ -1844,27 +1413,9 @@ void CubismShader_CC::SetupShaderProgram(CubismRenderer_CC* renderer
 	blend.destinationAlphaBlendFactor = DST_ALPHA;
 }
 
-backend::Program* CubismShader_CC::LoadShaderProgram(const std::string& vertShaderSrc, const std::string& fragShaderSrc)
-{
-	return backend::Device::getInstance()->newProgram(vertShaderSrc, fragShaderSrc);
-}
-
 /*********************************************************************************************************************
  *                                      CubismRenderer_CC
  ********************************************************************************************************************/
-
-#if CSM_RENDERER_EXT
-void CubismRenderer_CC::SetExtShaderMode(csmBool extMode, csmBool extPAMode)
-{
-	CubismShader_CC::SetExtShaderMode(extMode, extPAMode);
-	CubismShader_CC::DeleteInstance();
-}
-
-void CubismRenderer_CC::ReloadShader()
-{
-	CubismShader_CC::DeleteInstance();
-}
-#endif
 
 CubismRenderer* CubismRenderer::Create()
 {
