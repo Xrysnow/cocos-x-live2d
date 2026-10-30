@@ -531,7 +531,12 @@ int32_t Model::getDrawableCulling(const std::string& name) const
 
 int32_t Model::getDrawableBlendMode(const std::string& name) const
 {
-	return (int32_t)model->GetModel()->GetDrawableBlendMode(getDrawableIndex(name));
+	return model->GetModel()->GetDrawableBlendModeType(getDrawableIndex(name)).GetColorBlendType();
+}
+
+int32_t Model::getDrawableAlphaBlendMode(const std::string& name) const
+{
+	return model->GetModel()->GetDrawableBlendModeType(getDrawableIndex(name)).GetAlphaBlendType();
 }
 
 Vec2 Model::getGravity() const

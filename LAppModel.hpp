@@ -239,6 +239,7 @@ private:
 	
     SoundEventHandler _soundHandler;
 	cocos2d::Vector<cocos2d::Texture2D*> _loadedTextures;
+	Csm::csmBool _lipSync = true;
 	Csm::csmFloat32 _lipValue;
     unsigned int _mocVersion = 0;
 };

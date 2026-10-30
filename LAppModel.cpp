@@ -119,7 +119,8 @@ bool LAppModel::LoadAssets(const csmChar* dir, const csmChar* fileName)
 
     SetupModel(setting);
 
-    CreateRenderer();
+    const auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    CreateRenderer(static_cast<csmUint32>(frameSize.width), static_cast<csmUint32>(frameSize.height));
 
     SetupTextures();
 	return true;
@@ -402,8 +403,8 @@ void LAppModel::Update()
     _userTimeSeconds += deltaTimeSeconds;
 
     _dragManager->Update(deltaTimeSeconds);
-    _dragX = _dragManager->GetX();
-    _dragY = _dragManager->GetY();
+    const auto _dragX = _dragManager->GetX();
+    const auto _dragY = _dragManager->GetY();
 
     // モーションによるパラメータ更新の有無
     csmBool motionUpdated = false;
@@ -616,7 +617,7 @@ csmBool LAppModel::SetExpression(const csmChar* expressionID)
     if (_debugMode) LAppPal::PrintLog("[L2D] expression: [%s]", expressionID);
     if (motion != nullptr)
     {
-	    const auto h = _expressionManager->StartMotionPriority(motion, false, PriorityForce);
+	    const auto h = _expressionManager->StartMotion(motion, false);
 		return h != InvalidMotionQueueEntryHandleValue;
     }
     else
@@ -649,7 +650,8 @@ void LAppModel::ReloadRenderer()
 {
     DeleteRenderer();
 
-    CreateRenderer();
+    const auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    CreateRenderer(static_cast<csmUint32>(frameSize.width), static_cast<csmUint32>(frameSize.height));
 
     SetupTextures();
 }

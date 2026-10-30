@@ -186,6 +186,25 @@ int lua_L2D_Model_getDrawableBlendMode(lua_State* tolua_S)
 	}
 	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
 }
+int lua_L2D_Model_getDrawableAlphaBlendMode(lua_State* tolua_S)
+{
+	bool ok = true;
+	constexpr auto LUA_OBJ_TYPE = "l2d.Model";
+	constexpr auto LUA_FNAME = "l2d.Model:getDrawableAlphaBlendMode";
+	LUA_CHECK_COBJ_TYPE(tolua_S, LUA_OBJ_TYPE, LUA_FNAME);
+	auto cobj = (l2d::Model*)tolua_tousertype(tolua_S, 1, nullptr);
+	LUA_CHECK_COBJ(tolua_S, cobj, LUA_FNAME);
+	const int argc = lua_gettop(tolua_S) - 1;
+	if (argc == 1) {
+		std::string arg0;
+		ok &= luaval_to_std_string(tolua_S, 2, &arg0, LUA_FNAME);
+		LUA_CHECK_PARAMETER(tolua_S, ok, LUA_FNAME);
+		auto ret = cobj->getDrawableAlphaBlendMode(arg0);
+		tolua_pushnumber(tolua_S, (lua_Number)ret);
+		return 1;
+	}
+	LUA_PARAMETER_ERROR(tolua_S, LUA_FNAME, argc, "1");
+}
 int lua_L2D_Model_getDrawableCount(lua_State* tolua_S)
 {
 	bool ok = true;
@@ -1144,6 +1163,7 @@ int lua_register_L2D_Model(lua_State* tolua_S)
 		tolua_function(tolua_S, "getDebugRectRenderer", lua_L2D_Model_getDebugRectRenderer);
 		tolua_function(tolua_S, "getDirectory", lua_L2D_Model_getDirectory);
 		tolua_function(tolua_S, "getDrawableBlendMode", lua_L2D_Model_getDrawableBlendMode);
+		tolua_function(tolua_S, "getDrawableAlphaBlendMode", lua_L2D_Model_getDrawableAlphaBlendMode);
 		tolua_function(tolua_S, "getDrawableCount", lua_L2D_Model_getDrawableCount);
 		tolua_function(tolua_S, "getDrawableCulling", lua_L2D_Model_getDrawableCulling);
 		tolua_function(tolua_S, "getDrawableNames", lua_L2D_Model_getDrawableNames);

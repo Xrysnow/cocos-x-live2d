@@ -10,6 +10,7 @@
 
 namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 	class CubismRenderer_CC;
+	class CubismCompositor_CC;
 	class CubismClippingContext_CC;
 
 	class CubismDrawCommand_CC
@@ -158,26 +159,30 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 		friend class CubismClippingManager_CC;
 		friend class CubismShader_CC;
 		friend class CubismOffscreenFrame_CC;
+		friend class CubismCompositor_CC;
 
 	public:
 		CubismRenderer_CC(const CubismRenderer_CC&) = delete;
 		CubismRenderer_CC& operator=(const CubismRenderer_CC&) = delete;
 
 		void Initialize(CubismModel* model) override;
+		void Initialize(CubismModel* model, csmInt32 maskBufferCount) override;
 		void BindTexture(csmUint32 modelTextureNo, cocos2d::Texture2D* texture);
 		void SetClippingMaskBufferSize(csmFloat32 width, csmFloat32 height);
 		CubismVector2 GetClippingMaskBufferSize() const;
 		CubismOffscreenFrame_CC* GetOffscreenFrame() { return &_offscreenFrameBuffer; }
 
 	protected:
-		CubismRenderer_CC();
+		CubismRenderer_CC(csmUint32 width, csmUint32 height);
 		virtual ~CubismRenderer_CC();
 		void DoDrawModel() override;
+		void BeforeDrawModelRenderTarget() override {}
+		void AfterDrawModelRenderTarget() override {}
 		void DrawMesh(
 			csmInt32 textureNo, csmInt32 indexCount, csmInt32 vertexCount
 			, csmUint16* indexArray, csmFloat32* vertexArray, csmFloat32* uvArray
 			, csmFloat32 opacity, CubismBlendMode colorBlendMode
-			, csmBool invertedMask) override;
+			, csmBool invertedMask);
 		void DrawMeshCC(CubismDrawCommand_CC* command,
 			csmInt32 textureNo, csmInt32 indexCount, csmInt32 vertexCount
 			, csmUint16* indexArray, csmFloat32* vertexArray, csmFloat32* uvArray
@@ -208,6 +213,7 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 		void ClearCommands();
 
 	private:
+		CubismCompositor_CC* _compositor = nullptr;
 		cocos2d::Renderer* ccr = nullptr;
 		std::vector<std::shared_ptr<cocos2d::RenderCommand>> cmds;
 		cocos2d::Map<csmInt32, cocos2d::Texture2D*> _textures;

@@ -92,7 +92,10 @@ namespace l2d
 		std::vector<std::string> getDrawableNames() const;
 		float getDrawableOpacity(const std::string& name) const;
 		int32_t getDrawableCulling(const std::string& name) const;
+		// Cubism color blend enum; legacy normal/add/multiply remain 0/1/2.
 		int32_t getDrawableBlendMode(const std::string& name) const;
+		// Cubism alpha blend enum: over/atop/out/conjoint/disjoint = 0/1/2/3/4.
+		int32_t getDrawableAlphaBlendMode(const std::string& name) const;
 
 		// gravity, wind
 

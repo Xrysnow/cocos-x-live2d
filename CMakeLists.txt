@@ -19,6 +19,9 @@ target_sources(${LIB_NAME}
     CubismOffscreenSurface_CC.h
     CubismRenderer_CC.cpp
     CubismRenderer_CC.h
+    CubismCompositor_CC.cpp
+    CubismCompositor_CC.h
+    CubismBlendShaders_CC.h
     L2DFramework.cpp
     L2DFramework.h
     L2DModel.cpp
@@ -57,6 +60,8 @@ target_sources(${LIB_NAME}
   PRIVATE
     ${SRC_DIR}/Rendering/CubismRenderer.cpp
     ${SRC_DIR}/Rendering/CubismRenderer.hpp
+    ${SRC_DIR}/Rendering/csmBlendMode.cpp
+    ${SRC_DIR}/Rendering/csmBlendMode.hpp
 )
 add_subdirectory(${SRC_DIR}/Type)
 add_subdirectory(${SRC_DIR}/Utils)

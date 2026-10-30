@@ -1,4 +1,5 @@
 ﻿#include "CubismRenderer_CC.h"
+#include "CubismCompositor_CC.h"
 #include "Type/CubismBasicType.hpp"
 #include "Model/CubismModel.hpp"
 #include "renderer/backend/Device.h"
@@ -40,6 +41,7 @@ CubismDrawCommand_CC::CubismDrawCommand_CC()
 
 CubismDrawCommand_CC::~CubismDrawCommand_CC()
 {
+	CC_SAFE_RELEASE_NULL(_command.getPipelineDescriptor().programState);
 	if(_drawBuffer)
 		CSM_FREE(_drawBuffer);
 }
@@ -358,8 +360,8 @@ void CubismClippingManager_CC::SetupClippingContext(CubismModel& model, CubismRe
 						const_cast<csmUint16*>(model.GetDrawableVertexIndices(clipDrawIndex)),
 						const_cast<csmFloat32*>(model.GetDrawableVertices(clipDrawIndex)),
 						reinterpret_cast<csmFloat32*>(const_cast<Core::csmVector2*>(model.GetDrawableVertexUvs(clipDrawIndex))),
-						model.GetMultiplyColor(clipDrawIndex),
-						model.GetScreenColor(clipDrawIndex),
+						model.GetOverrideMultiplyAndScreenColor().GetDrawableMultiplyColor(clipDrawIndex),
+						model.GetOverrideMultiplyAndScreenColor().GetDrawableScreenColor(clipDrawIndex),
 						model.GetDrawableOpacity(clipDrawIndex),
 						CubismRenderer::CubismBlendMode_Normal,   //クリッピングは通常描画を強制
 						false   // マスク生成時はクリッピングの反転使用は全く関係がない
@@ -1417,9 +1419,9 @@ void CubismShader_CC::SetupShaderProgram(CubismRenderer_CC* renderer
  *                                      CubismRenderer_CC
  ********************************************************************************************************************/
 
-CubismRenderer* CubismRenderer::Create()
+CubismRenderer* CubismRenderer::Create(csmUint32 width, csmUint32 height)
 {
-	return CSM_NEW CubismRenderer_CC();
+	return CSM_NEW CubismRenderer_CC(width, height);
 }
 
 void CubismRenderer::StaticRelease()
@@ -1427,8 +1429,9 @@ void CubismRenderer::StaticRelease()
 	CubismRenderer_CC::DoStaticRelease();
 }
 
-CubismRenderer_CC::CubismRenderer_CC()
-	: _clippingManager(nullptr)
+CubismRenderer_CC::CubismRenderer_CC(csmUint32 width, csmUint32 height)
+	: CubismRenderer(width, height)
+	, _clippingManager(nullptr)
 	, _clippingContextBufferForMask(nullptr)
 	, _clippingContextBufferForDraw(nullptr)
 	, _lastCullMode()
@@ -1445,6 +1448,7 @@ CubismRenderer_CC::CubismRenderer_CC()
 
 CubismRenderer_CC::~CubismRenderer_CC()
 {
+	delete _compositor;
 	CSM_DELETE_SELF(CubismClippingManager_CC, _clippingManager);
 
 	for (csmInt32 i = 0; i < _drawableDrawCommandBuffer.GetSize(); ++i)
@@ -1466,6 +1470,19 @@ void CubismRenderer_CC::DoStaticRelease()
 
 void CubismRenderer_CC::Initialize(CubismModel* model)
 {
+	Initialize(model, 1);
+}
+
+void CubismRenderer_CC::Initialize(CubismModel* model, csmInt32 maskBufferCount)
+{
+	CubismRenderer::Initialize(model, maskBufferCount);
+	if (CubismShader_CC::GetInstance()->_shaderSets.GetSize() == 0)
+		CubismShader_CC::GetInstance()->GenerateShaders();
+	if (model->IsBlendModeEnabled() || model->GetOffscreenCount() > 0)
+	{
+		_compositor = new CubismCompositor_CC(this);
+		return;
+	}
 	if (model->IsUsingMasking())
 	{
 		_clippingManager = CSM_NEW CubismClippingManager_CC();  //クリッピングマスク・バッファ前処理方式を初期化
@@ -1495,7 +1512,6 @@ void CubismRenderer_CC::Initialize(CubismModel* model)
 		}
 	}
 
-	CubismRenderer::Initialize(model);  //親クラスの処理を呼ぶ
 }
 
 void CubismRenderer_CC::PreDraw()
@@ -1521,6 +1537,11 @@ void CubismRenderer_CC::PreDraw()
 
 void CubismRenderer_CC::DoDrawModel()
 {
+	if (_compositor)
+	{
+		_compositor->Draw();
+		return;
+	}
 	//------------ クリッピングマスク・バッファ前処理方式の場合 ------------
 	if (_clippingManager != nullptr)
 	{
@@ -1545,7 +1566,7 @@ void CubismRenderer_CC::DoDrawModel()
 	PreDraw();
 
 	const csmInt32 drawableCount = GetModel()->GetDrawableCount();
-	const csmInt32* renderOrder = GetModel()->GetDrawableRenderOrders();
+	const csmInt32* renderOrder = GetModel()->GetRenderOrders();
 
 	// インデックスを描画順でソート
 	for (csmInt32 i = 0; i < drawableCount; ++i)
@@ -1618,8 +1639,8 @@ void CubismRenderer_CC::DoDrawModel()
 						const_cast<csmUint16*>(GetModel()->GetDrawableVertexIndices(clipDrawIndex)),
 						const_cast<csmFloat32*>(GetModel()->GetDrawableVertices(clipDrawIndex)),
 						reinterpret_cast<csmFloat32*>(const_cast<Core::csmVector2*>(GetModel()->GetDrawableVertexUvs(clipDrawIndex))),
-						GetModel()->GetMultiplyColor(clipDrawIndex),
-						GetModel()->GetScreenColor(clipDrawIndex),
+						GetModel()->GetOverrideMultiplyAndScreenColor().GetDrawableMultiplyColor(clipDrawIndex),
+						GetModel()->GetOverrideMultiplyAndScreenColor().GetDrawableScreenColor(clipDrawIndex),
 						GetModel()->GetDrawableOpacity(clipDrawIndex),
 						CubismRenderer::CubismBlendMode_Normal,   //クリッピングは通常描画を強制
 						false // マスク生成時はクリッピングの反転使用は全く関係がない
@@ -1655,10 +1676,10 @@ void CubismRenderer_CC::DoDrawModel()
 			const_cast<csmUint16*>(GetModel()->GetDrawableVertexIndices(drawableIndex)),
 			const_cast<csmFloat32*>(GetModel()->GetDrawableVertices(drawableIndex)),
 			reinterpret_cast<csmFloat32*>(const_cast<Core::csmVector2*>(GetModel()->GetDrawableVertexUvs(drawableIndex))),
-			GetModel()->GetMultiplyColor(drawableIndex),
-			GetModel()->GetScreenColor(drawableIndex),
+			GetModel()->GetOverrideMultiplyAndScreenColor().GetDrawableMultiplyColor(drawableIndex),
+			GetModel()->GetOverrideMultiplyAndScreenColor().GetDrawableScreenColor(drawableIndex),
 			GetModel()->GetDrawableOpacity(drawableIndex),
-			GetModel()->GetDrawableBlendMode(drawableIndex),
+			static_cast<CubismBlendMode>(GetModel()->GetDrawableBlendModeType(drawableIndex).GetColorBlendType()),
 			GetModel()->GetDrawableInvertedMask(drawableIndex) // マスクを反転使用するか
 		);
 	}
