@@ -99,10 +99,13 @@ endforeach()
 
 if(BUILD_LUA_LIBS)
   target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
+  target_include_directories(${LIB_NAME} PRIVATE
+    ${COCOS2DX_ROOT_PATH}/extensions/scripting/lua-bindings/manual)
   target_sources(${LIB_NAME}
     PRIVATE
       lua_live2d_auto.cpp
       lua_live2d_auto.hpp
+      lua_live2d_compat.hpp
   )
 endif()
 
