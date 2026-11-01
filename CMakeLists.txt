@@ -105,7 +105,6 @@ if(BUILD_LUA_LIBS)
     PRIVATE
       lua_live2d_auto.cpp
       lua_live2d_auto.hpp
-      lua_live2d_compat.hpp
   )
 endif()
 

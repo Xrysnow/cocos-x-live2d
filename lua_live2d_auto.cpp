@@ -1,5 +1,5 @@
 #include "lua_live2d_auto.hpp"
-#include "lua_live2d_compat.hpp"
+#include "lua_conversion/lua_conversion.hpp"
 #include "L2DModel.h"
 
 int lua_l2d_Model_addParameter(lua_State* lua_S)
