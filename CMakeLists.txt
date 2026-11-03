@@ -9,7 +9,7 @@ use_cocos2dx_compile_define(${LIB_NAME})
 use_cocos2dx_compile_options(${LIB_NAME})
 
 add_subdirectory(Core)
-target_link_libraries(${LIB_NAME} Live2DCubismCore)
+target_link_libraries(${LIB_NAME} PUBLIC Live2DCubismCore)
 
 set(SRC_DIR Framework/src)
 
@@ -88,7 +88,6 @@ set(INCLUDES
 )
 if(BUILD_LUA_LIBS)
     list(APPEND INCLUDES
-        ${COCOS2DX_ROOT_PATH}/external/lua/luajit/include
         ${COCOS2DX_ROOT_PATH}/external/lua/tolua)
 endif()
 foreach(dir ${INCLUDES})
@@ -99,6 +98,7 @@ endforeach()
 
 if(BUILD_LUA_LIBS)
   target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
+  target_link_libraries(${LIB_NAME} PUBLIC luajit)
   target_include_directories(${LIB_NAME} PRIVATE
     ${COCOS2DX_ROOT_PATH}/extensions/scripting/lua-bindings/manual)
   target_sources(${LIB_NAME}
