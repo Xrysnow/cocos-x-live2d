@@ -100,7 +100,7 @@ if(BUILD_LUA_LIBS)
   target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
   target_link_libraries(${LIB_NAME} PUBLIC luajit)
   target_include_directories(${LIB_NAME} PRIVATE
-    ${COCOS2DX_ROOT_PATH}/extensions/scripting/lua-bindings/manual)
+    ${COCOS2DX_ROOT_PATH}/cocos/scripting/lua-bindings/manual)
   target_sources(${LIB_NAME}
     PRIVATE
       lua_live2d_auto.cpp
