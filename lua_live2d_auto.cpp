@@ -5,346 +5,346 @@
 int lua_l2d_Model_addParameter(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:addParameter");
-	LUA_TRY_INVOKE(3, static_cast<void(l2d::Model::*)(const std::string&, float, float)>(&l2d::Model::addParameter));
-	LUA_TRY_INVOKE(2, [](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->addParameter(arg0,std::move(arg1));}});
+	LUA_TRY_INVOKE(3, &l2d::Model::addParameter);
+	LUA_TRY_INVOKE(2, ([](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->addParameter(arg0,std::move(arg1));}}));
 	LUA_INVOKE_FOOTER("2,3");
 }
 int lua_l2d_Model_areaHitTest(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:areaHitTest");
-	LUA_TRY_INVOKE_R(3, static_cast<bool(l2d::Model::*)(const char*, float, float)>(&l2d::Model::areaHitTest));
+	LUA_TRY_INVOKE_R(3, &l2d::Model::areaHitTest);
 	LUA_INVOKE_FOOTER("3");
 }
 int lua_l2d_Model_getCanvasOrigin(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getCanvasOrigin");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::Vec2(l2d::Model::*)()const>(&l2d::Model::getCanvasOrigin));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getCanvasOrigin);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getCanvasSize(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getCanvasSize");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::Size(l2d::Model::*)()const>(&l2d::Model::getCanvasSize));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getCanvasSize);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getDebugRectRenderer(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDebugRectRenderer");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::DrawNode*(l2d::Model::*)()const>(&l2d::Model::getDebugRectRenderer));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getDebugRectRenderer);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getDirectory(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDirectory");
-	LUA_TRY_INVOKE_R(0, static_cast<std::string(l2d::Model::*)()const>(&l2d::Model::getDirectory));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getDirectory);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getDrawableAlphaBlendMode(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableAlphaBlendMode");
-	LUA_TRY_INVOKE_R(1, static_cast<int32_t(l2d::Model::*)(const std::string&)const>(&l2d::Model::getDrawableAlphaBlendMode));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getDrawableAlphaBlendMode);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getDrawableBlendMode(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableBlendMode");
-	LUA_TRY_INVOKE_R(1, static_cast<int32_t(l2d::Model::*)(const std::string&)const>(&l2d::Model::getDrawableBlendMode));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getDrawableBlendMode);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getDrawableCount(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableCount");
-	LUA_TRY_INVOKE_R(0, static_cast<int32_t(l2d::Model::*)()const>(&l2d::Model::getDrawableCount));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getDrawableCount);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getDrawableCulling(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableCulling");
-	LUA_TRY_INVOKE_R(1, static_cast<int32_t(l2d::Model::*)(const std::string&)const>(&l2d::Model::getDrawableCulling));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getDrawableCulling);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getDrawableNames(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableNames");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<std::string>(l2d::Model::*)()const>(&l2d::Model::getDrawableNames));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getDrawableNames);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getDrawableOpacity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getDrawableOpacity");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getDrawableOpacity));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getDrawableOpacity);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getExpressionNames(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getExpressionNames");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<std::string>(l2d::Model::*)()const>(&l2d::Model::getExpressionNames));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getExpressionNames);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getGravity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getGravity");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::Vec2(l2d::Model::*)()const>(&l2d::Model::getGravity));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getGravity);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getLipSync(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getLipSync");
-	LUA_TRY_INVOKE_R(0, static_cast<bool(l2d::Model::*)()const>(&l2d::Model::getLipSync));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getLipSync);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getLipValue(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getLipValue");
-	LUA_TRY_INVOKE_R(0, static_cast<float(l2d::Model::*)()const>(&l2d::Model::getLipValue));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getLipValue);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getMocVersion(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getMocVersion");
-	LUA_TRY_INVOKE_R(0, static_cast<uint32_t(l2d::Model::*)()const>(&l2d::Model::getMocVersion));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getMocVersion);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getModelColor(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getModelColor");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::Color4B(l2d::Model::*)()const>(&l2d::Model::getModelColor));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getModelColor);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getModelOpacity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getModelOpacity");
-	LUA_TRY_INVOKE_R(0, static_cast<uint8_t(l2d::Model::*)()const>(&l2d::Model::getModelOpacity));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getModelOpacity);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getMotionCount(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getMotionCount");
-	LUA_TRY_INVOKE_R(1, static_cast<size_t(l2d::Model::*)(const std::string&)>(&l2d::Model::getMotionCount));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getMotionCount);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getMotionGroupNames(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getMotionGroupNames");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<std::string>(l2d::Model::*)()const>(&l2d::Model::getMotionGroupNames));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getMotionGroupNames);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getParameter(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameter");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getParameter));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getParameter);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getParameterCount(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameterCount");
-	LUA_TRY_INVOKE_R(0, static_cast<int32_t(l2d::Model::*)()const>(&l2d::Model::getParameterCount));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getParameterCount);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getParameterDefault(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameterDefault");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getParameterDefault));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getParameterDefault);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getParameterMax(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameterMax");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getParameterMax));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getParameterMax);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getParameterMin(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameterMin");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getParameterMin));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getParameterMin);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getParameterNames(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getParameterNames");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<std::string>(l2d::Model::*)()const>(&l2d::Model::getParameterNames));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getParameterNames);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getPartCount(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getPartCount");
-	LUA_TRY_INVOKE_R(0, static_cast<int32_t(l2d::Model::*)()const>(&l2d::Model::getPartCount));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getPartCount);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getPartNames(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getPartNames");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<std::string>(l2d::Model::*)()const>(&l2d::Model::getPartNames));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getPartNames);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getPartOpacity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getPartOpacity");
-	LUA_TRY_INVOKE_R(1, static_cast<float(l2d::Model::*)(const std::string&)const>(&l2d::Model::getPartOpacity));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::getPartOpacity);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_getPartParents(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getPartParents");
-	LUA_TRY_INVOKE_R(0, static_cast<std::vector<int>(l2d::Model::*)()const>(&l2d::Model::getPartParents));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getPartParents);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getPixelsPerUnit(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getPixelsPerUnit");
-	LUA_TRY_INVOKE_R(0, static_cast<float(l2d::Model::*)()const>(&l2d::Model::getPixelsPerUnit));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getPixelsPerUnit);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_getSoundFileName(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getSoundFileName");
-	LUA_TRY_INVOKE_R(2, static_cast<std::string(l2d::Model::*)(const std::string&, int32_t)>(&l2d::Model::getSoundFileName));
+	LUA_TRY_INVOKE_R(2, &l2d::Model::getSoundFileName);
 	LUA_INVOKE_FOOTER("2");
 }
 int lua_l2d_Model_getWind(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:getWind");
-	LUA_TRY_INVOKE_R(0, static_cast<cocos2d::Vec2(l2d::Model::*)()const>(&l2d::Model::getWind));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::getWind);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_multiplyParameter(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:multiplyParameter");
-	LUA_TRY_INVOKE(3, static_cast<void(l2d::Model::*)(const std::string&, float, float)>(&l2d::Model::multiplyParameter));
-	LUA_TRY_INVOKE(2, [](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->multiplyParameter(arg0,std::move(arg1));}});
+	LUA_TRY_INVOKE(3, &l2d::Model::multiplyParameter);
+	LUA_TRY_INVOKE(2, ([](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->multiplyParameter(arg0,std::move(arg1));}}));
 	LUA_INVOKE_FOOTER("2,3");
 }
 int lua_l2d_Model_resetDragging(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:resetDragging");
-	LUA_TRY_INVOKE(0, static_cast<void(l2d::Model::*)()>(&l2d::Model::resetDragging));
+	LUA_TRY_INVOKE(0, &l2d::Model::resetDragging);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_setAcceleration(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setAcceleration");
-	LUA_TRY_INVOKE(3, static_cast<void(l2d::Model::*)(float, float, float)>(&l2d::Model::setAcceleration));
+	LUA_TRY_INVOKE(3, &l2d::Model::setAcceleration);
 	LUA_INVOKE_FOOTER("3");
 }
 int lua_l2d_Model_setAutoDragging(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setAutoDragging");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(bool)>(&l2d::Model::setAutoDragging));
+	LUA_TRY_INVOKE(1, &l2d::Model::setAutoDragging);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setBlinkingInterval(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setBlinkingInterval");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(float)>(&l2d::Model::setBlinkingInterval));
+	LUA_TRY_INVOKE(1, &l2d::Model::setBlinkingInterval);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setBlinkingSettings(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setBlinkingSettings");
-	LUA_TRY_INVOKE(3, static_cast<void(l2d::Model::*)(float, float, float)>(&l2d::Model::setBlinkingSettings));
+	LUA_TRY_INVOKE(3, &l2d::Model::setBlinkingSettings);
 	LUA_INVOKE_FOOTER("3");
 }
 int lua_l2d_Model_setDebugRectEnable(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setDebugRectEnable");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(bool)>(&l2d::Model::setDebugRectEnable));
+	LUA_TRY_INVOKE(1, &l2d::Model::setDebugRectEnable);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setDragging(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setDragging");
-	LUA_TRY_INVOKE(2, static_cast<void(l2d::Model::*)(float, float)>(&l2d::Model::setDragging));
+	LUA_TRY_INVOKE(2, &l2d::Model::setDragging);
 	LUA_INVOKE_FOOTER("2");
 }
 int lua_l2d_Model_setExpression(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setExpression");
-	LUA_TRY_INVOKE_R(1, static_cast<bool(l2d::Model::*)(const char*)>(&l2d::Model::setExpression));
+	LUA_TRY_INVOKE_R(1, &l2d::Model::setExpression);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setGravity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setGravity");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(const cocos2d::Vec2&)>(&l2d::Model::setGravity));
+	LUA_TRY_INVOKE(1, &l2d::Model::setGravity);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setLipSync(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setLipSync");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(bool)>(&l2d::Model::setLipSync));
+	LUA_TRY_INVOKE(1, &l2d::Model::setLipSync);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setLipValue(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setLipValue");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(float)>(&l2d::Model::setLipValue));
+	LUA_TRY_INVOKE(1, &l2d::Model::setLipValue);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setModelColor(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setModelColor");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(const cocos2d::Color4B&)>(&l2d::Model::setModelColor));
+	LUA_TRY_INVOKE(1, &l2d::Model::setModelColor);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setModelOpacity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setModelOpacity");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(uint8_t)>(&l2d::Model::setModelOpacity));
+	LUA_TRY_INVOKE(1, &l2d::Model::setModelOpacity);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setParameter(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setParameter");
-	LUA_TRY_INVOKE(3, static_cast<void(l2d::Model::*)(const std::string&, float, float)>(&l2d::Model::setParameter));
-	LUA_TRY_INVOKE(2, [](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->setParameter(arg0,std::move(arg1));}});
+	LUA_TRY_INVOKE(3, &l2d::Model::setParameter);
+	LUA_TRY_INVOKE(2, ([](l2d::Model* obj,const std::string& arg0,float arg1){{return obj->setParameter(arg0,std::move(arg1));}}));
 	LUA_INVOKE_FOOTER("2,3");
 }
 int lua_l2d_Model_setPartOpacity(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setPartOpacity");
-	LUA_TRY_INVOKE(2, static_cast<void(l2d::Model::*)(const std::string&, float)>(&l2d::Model::setPartOpacity));
+	LUA_TRY_INVOKE(2, &l2d::Model::setPartOpacity);
 	LUA_INVOKE_FOOTER("2");
 }
 int lua_l2d_Model_setRandomExpression(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setRandomExpression");
-	LUA_TRY_INVOKE_R(0, static_cast<bool(l2d::Model::*)()>(&l2d::Model::setRandomExpression));
+	LUA_TRY_INVOKE_R(0, &l2d::Model::setRandomExpression);
 	LUA_INVOKE_FOOTER("0");
 }
 int lua_l2d_Model_setSoundEventHandler(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setSoundEventHandler");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(const LAppModel::SoundEventHandler&)>(&l2d::Model::setSoundEventHandler));
+	LUA_TRY_INVOKE(1, &l2d::Model::setSoundEventHandler);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_setTouchDragging(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setTouchDragging");
-	LUA_TRY_INVOKE(2, static_cast<void(l2d::Model::*)(float, float)>(&l2d::Model::setTouchDragging));
+	LUA_TRY_INVOKE(2, &l2d::Model::setTouchDragging);
 	LUA_INVOKE_FOOTER("2");
 }
 int lua_l2d_Model_setWind(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:setWind");
-	LUA_TRY_INVOKE(1, static_cast<void(l2d::Model::*)(const cocos2d::Vec2&)>(&l2d::Model::setWind));
+	LUA_TRY_INVOKE(1, &l2d::Model::setWind);
 	LUA_INVOKE_FOOTER("1");
 }
 int lua_l2d_Model_startMotion(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:startMotion");
-	LUA_TRY_INVOKE_R(3, static_cast<bool(l2d::Model::*)(const char*, int32_t, int32_t)>(&l2d::Model::startMotion));
+	LUA_TRY_INVOKE_R(3, &l2d::Model::startMotion);
 	LUA_INVOKE_FOOTER("3");
 }
 int lua_l2d_Model_startRandomMotion(lua_State* lua_S)
 {
 	LUA_INVOKE_HEADER("l2d.Model", "l2d.Model:startRandomMotion");
-	LUA_TRY_INVOKE_R(2, static_cast<bool(l2d::Model::*)(const char*, int32_t)>(&l2d::Model::startRandomMotion));
+	LUA_TRY_INVOKE_R(2, &l2d::Model::startRandomMotion);
 	LUA_INVOKE_FOOTER("2");
 }
 int lua_l2d_Model_create(lua_State* lua_S)
 {
 	LUA_SINVOKE_HEADER("l2d.Model", "l2d.Model:create");
-	LUA_TRY_INVOKE_R(2, static_cast<l2d::Model*(*)(const std::string&, const std::string&)>(&l2d::Model::create));
+	LUA_TRY_INVOKE_R(2, &l2d::Model::create);
 	LUA_SINVOKE_FOOTER("2");
 }
 int luaReg_Live2D_l2dModel(lua_State* lua_S)

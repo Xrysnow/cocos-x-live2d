@@ -4,8 +4,8 @@ set(LIB_NAME cc_live2d)
 project(${LIB_NAME})
 
 add_library(${LIB_NAME} STATIC)
-add_dependencies(${LIB_NAME} cocos2d)
-use_cocos2dx_compile_define(${LIB_NAME})
+# Inherit core headers and consumer definitions, including DLL imports.
+target_link_libraries(${LIB_NAME} PUBLIC cocos2d)
 use_cocos2dx_compile_options(${LIB_NAME})
 
 add_subdirectory(Core)
@@ -69,38 +69,15 @@ add_subdirectory(${SRC_DIR}/Utils)
 # Add include path.
 target_include_directories(${LIB_NAME}
   PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${SRC_DIR}
   PRIVATE
     ${SRC_DIR}/Rendering
     Core/include
 )
 
-set(INCLUDES
-    ${COCOS2DX_ROOT_PATH}/cocos
-    ${COCOS2DX_ROOT_PATH}/cocos/base
-    ${COCOS2DX_ROOT_PATH}/cocos/platform
-    ${COCOS2DX_ROOT_PATH}/extensions
-    ${COCOS2DX_ROOT_PATH}/external
-    ${COCOS2DX_ROOT_PATH}/external/glfw3/include/win32
-    ${COCOS2DX_ROOT_PATH}/external/glfw/include/GLFW
-    ${COCOS2DX_ROOT_PATH}/external/jni.hpp/include
-    ${COCOS2DX_ROOT_PATH}/external/win32-specific/gles/include/OGLES
-)
 if(BUILD_LUA_LIBS)
-    list(APPEND INCLUDES
-        ${COCOS2DX_ROOT_PATH}/external/lua/tolua)
-endif()
-foreach(dir ${INCLUDES})
-    if(EXISTS ${dir})
-        include_directories(${dir})
-    endif()
-endforeach()
-
-if(BUILD_LUA_LIBS)
-  target_compile_definitions(${LIB_NAME} PUBLIC _USRLUASTATIC)
-  target_link_libraries(${LIB_NAME} PUBLIC luajit)
-  target_include_directories(${LIB_NAME} PRIVATE
-    ${COCOS2DX_ROOT_PATH}/cocos/scripting/lua-bindings/manual)
+  target_link_libraries(${LIB_NAME} PUBLIC luacocos2d)
   target_sources(${LIB_NAME}
     PRIVATE
       lua_live2d_auto.cpp
@@ -114,13 +91,8 @@ endif()
 
 target_compile_definitions(${LIB_NAME} PUBLIC CSM_TARGET_COCOS)
 
-if(CC_USE_GFX)
-    target_compile_definitions(${LIB_NAME} PUBLIC CC_USE_GFX)
-endif()
-
 set_target_properties(${LIB_NAME}
   PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
 )
