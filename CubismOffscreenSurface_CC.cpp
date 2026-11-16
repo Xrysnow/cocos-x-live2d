@@ -57,18 +57,19 @@ void CubismOffscreenFrame_CC::Clear(float r, float g, float b, float a)
 csmBool CubismOffscreenFrame_CC::CreateOffscreenFrame(
 	csmUint32 displayBufferWidth, csmUint32 displayBufferHeight, RenderTexture* renderTexture)
 {
+    cc::IntrusivePtr<cocos2d::RenderTexture> newRenderTexture;
 	DestroyOffscreenFrame();
 
 	do
 	{
 		if (!renderTexture)
 		{
-			_renderTexture = RenderTexture::create(
+			_renderTexture = (newRenderTexture = RenderTexture::create(
 				displayBufferWidth, displayBufferHeight
 #ifdef CC_VERSION
 				, false
 #endif // CC_VERSION
-			);
+			)).get();
 			if(!_renderTexture)
 				break;
 			_renderTexture->retain();

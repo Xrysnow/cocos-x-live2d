@@ -37,10 +37,11 @@ bool Framework::_init()
 	}
 	CubismFramework::Initialize();
 
-	L2DRecreatedListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [](EventCustom*)
+	auto listenerOwner = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [](EventCustom*)
 	{
 		Rendering::CubismRenderer::StaticRelease();
 	});
+	L2DRecreatedListener = listenerOwner.get();
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(
 		L2DRecreatedListener, -1);
 

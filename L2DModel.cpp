@@ -33,15 +33,13 @@ Model::~Model()
 	instances.erase(this);
 }
 
-Model* Model::create(const std::string& dir, const std::string& fileName)
+cc::IntrusivePtr<Model> Model::create(const std::string& dir, const std::string& fileName)
 {
-	auto ret = new (std::nothrow) Model();
+	cc::IntrusivePtr<Model> ret{new (std::nothrow) Model()};
 	if (Framework::lazyInit() && ret && ret->_init(dir, fileName))
 	{
-		ret->autorelease();
 		return ret;
 	}
-	CC_SAFE_DELETE(ret);
 	return nullptr;
 }
 
@@ -53,7 +51,8 @@ uint32_t Model::getMocVersion() const
 bool Model::_init(const std::string& dir, const std::string& fileName)
 {
 	if (!Widget::init()) return false;
-	debugRenderer = DrawNode::create();
+	auto debugRendererOwner = DrawNode::create();
+	debugRenderer = debugRendererOwner.get();
 	if (!debugRenderer) return false;
 	addChild(debugRenderer, 1);
 
@@ -68,10 +67,11 @@ bool Model::_init(const std::string& dir, const std::string& fileName)
 		cocos2d::log("can't load model '%s' at [%s]", fileName.c_str(), d.c_str());
 		return false;
 	}
-	recreatListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [&](EventCustom*)
+	auto listenerOwner = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [&](EventCustom*)
 	{
 		model->ReloadRenderer();
 	});
+	recreatListener = listenerOwner.get();
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(recreatListener, 2);
 	model->GetRenderer<Rendering::CubismRenderer>()->IsPremultipliedAlpha(false);
 
