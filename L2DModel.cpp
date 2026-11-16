@@ -35,7 +35,7 @@ Model::~Model()
 
 cc::IntrusivePtr<Model> Model::create(const std::string& dir, const std::string& fileName)
 {
-	cc::IntrusivePtr<Model> ret{new (std::nothrow) Model()};
+	cc::IntrusivePtr ret{new (std::nothrow) Model()};
 	if (Framework::lazyInit() && ret && ret->_init(dir, fileName))
 	{
 		return ret;

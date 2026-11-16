@@ -107,7 +107,7 @@ void CubismOffscreenFrame_CC::DestroyOffscreenFrame()
 	if(!_isInheritedRenderTexture)
 		CC_SAFE_RELEASE_NULL(_renderTexture);
 	_colorBuffer = nullptr;
-	CC_SAFE_DELETE(_renderTarget);
+	CC_SAFE_RELEASE_NULL(_renderTarget);
 }
 
 Texture2D* CubismOffscreenFrame_CC::GetColorBuffer() const

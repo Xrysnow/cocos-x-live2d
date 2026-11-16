@@ -129,7 +129,7 @@ struct Surface
         descriptor.height = h;
         descriptor.textureUsage = TextureUsage::RENDER_TARGET;
         descriptor.textureFormat = PixelFormat::RGBA8;
-        texture = cc::IntrusivePtr<Texture2D>{new Texture2D()}.detach();
+        texture = cc::IntrusivePtr{new Texture2D()}.detach();
         texture->updateTextureDescriptor(descriptor, true);
         texture->setTexParameters({SamplerFilter::LINEAR, SamplerFilter::LINEAR,
             SamplerAddressMode::CLAMP_TO_EDGE, SamplerAddressMode::CLAMP_TO_EDGE});
@@ -240,7 +240,7 @@ void main() { cc_FragColor = texture(s_texture0, v_texCoord) * u_baseColor; }
         command->UpdateIndexBuffer(const_cast<csmUint16*>(indices), indexCount);
         auto cmd = command->GetCommand();
         auto& desc = cmd->getPipelineDescriptor();
-        auto state = cc::IntrusivePtr<ProgramState>{new ProgramState(program)}.detach();
+        auto state = cc::IntrusivePtr{new ProgramState(program)}.detach();
         desc.programState = state;
         state->setTexture(program->getUniformLocation("s_texture0"), 0, texture->getBackendTexture());
         auto bindTexture = [&](const char* name, int unit, Texture2D* tex) {

@@ -1264,7 +1264,7 @@ void CubismShader_CC::SetupShaderProgram(CubismRenderer_CC* renderer
 	{
 		auto shaderSet = _shaderSets[ShaderNames_SetupMask];
 		if (!state)
-			state = cc::IntrusivePtr<ProgramState>{new ProgramState(shaderSet->ShaderProgram)}.detach();
+			state = cc::IntrusivePtr{new ProgramState(shaderSet->ShaderProgram)}.detach();
 
 		//テクスチャ設定
 		state->setTexture(shaderSet->SamplerTexture0Location, 0, texture->getBackendTexture());
@@ -1348,7 +1348,7 @@ void CubismShader_CC::SetupShaderProgram(CubismRenderer_CC* renderer
 		}
 
 		if (!state)
-			state = cc::IntrusivePtr<ProgramState>{new ProgramState(shaderSet->ShaderProgram)}.detach();
+			state = cc::IntrusivePtr{new ProgramState(shaderSet->ShaderProgram)}.detach();
 
 #ifndef CC_VERSION
 		// 頂点配列の設定
