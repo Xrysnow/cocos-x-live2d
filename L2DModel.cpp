@@ -2,7 +2,7 @@
 #include "L2DFramework.h"
 #include "Id/CubismIdManager.hpp"
 #include "Live2DCubismCore.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
+#include "scripting/lua-bindings/manual/LuaEngine.h"
 
 using namespace l2d;
 using namespace cocos2d;

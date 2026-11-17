@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Type/csmMap.hpp"
-#include "2d/CCRenderTexture.h"
+#include "2d/RenderTexture.h"
 
 namespace Live2D { namespace Cubism { namespace Framework { namespace Rendering {
 	class CubismRenderer_CC;
