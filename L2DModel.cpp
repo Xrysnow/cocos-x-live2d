@@ -5,7 +5,7 @@
 #include "scripting/lua-bindings/manual/LuaEngine.h"
 
 using namespace l2d;
-using namespace cocos2d;
+using namespace cc;
 using namespace Live2D::Cubism::Framework;
 
 static CubismMatrix44 CubismMatrixIdentity = {};
@@ -64,7 +64,7 @@ bool Model::_init(const std::string& dir, const std::string& fileName)
 		d += "/";
 	if (!model->LoadAssets(d.c_str(), fileName.c_str()))
 	{
-		cocos2d::log("can't load model '%s' at [%s]", fileName.c_str(), d.c_str());
+		cc::log("can't load model '%s' at [%s]", fileName.c_str(), d.c_str());
 		return false;
 	}
 	auto listenerOwner = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [&](EventCustom*)

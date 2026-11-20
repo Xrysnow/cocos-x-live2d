@@ -8,8 +8,8 @@
 #include <map>
 #include <memory>
 
-using namespace cocos2d;
-using namespace cocos2d::backend;
+using namespace cc;
+using namespace cc::backend;
 using namespace Live2D::Cubism::Framework;
 using namespace Live2D::Cubism::Framework::Rendering;
 

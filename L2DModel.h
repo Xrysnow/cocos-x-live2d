@@ -8,7 +8,7 @@
 
 namespace l2d
 {
-	class Model : public cocos2d::ui::Widget
+	class Model : public cc::ui::Widget
 	{
 	protected:
 		Model();
@@ -25,8 +25,8 @@ namespace l2d
 		// info
 
 		uint32_t getMocVersion() const;
-		cocos2d::Size getCanvasSize() const;
-		cocos2d::Vec2 getCanvasOrigin() const;
+		cc::Size getCanvasSize() const;
+		cc::Vec2 getCanvasOrigin() const;
 		float getPixelsPerUnit() const;
 		std::string getDirectory() const;
 		std::vector<std::string> getMotionGroupNames() const;
@@ -51,19 +51,19 @@ namespace l2d
 
 		void setModelOpacity(uint8_t opacity);
 		uint8_t getModelOpacity() const;
-		void setModelColor(const cocos2d::Color4B& color);
-		cocos2d::Color4B getModelColor() const;
+		void setModelColor(const cc::Color4B& color);
+		cc::Color4B getModelColor() const;
 
 		void setDebugRectEnable(bool b);
-		cocos2d::DrawNode* getDebugRectRenderer() const;
+		cc::DrawNode* getDebugRectRenderer() const;
 		void update(float delta) override;
 	protected:
 		void onEnter() override;
 		void onExit() override;
-		void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
+		void draw(cc::Renderer* renderer, const cc::Mat4& transform, uint32_t flags) override;
 		void updateHitBoxes();
 		void drawDebugRects();
-		bool hitTest(const cocos2d::Vec2& pt, const cocos2d::Camera* camera, cocos2d::Vec3* p) const override;
+		bool hitTest(const cc::Vec2& pt, const cc::Camera* camera, cc::Vec3* p) const override;
 	public:
 
 		// parameter
@@ -99,10 +99,10 @@ namespace l2d
 
 		// gravity, wind
 
-		cocos2d::Vec2 getGravity() const;
-		void setGravity(const cocos2d::Vec2& gravity);
-		cocos2d::Vec2 getWind() const;
-		void setWind(const cocos2d::Vec2& wind);
+		cc::Vec2 getGravity() const;
+		void setGravity(const cc::Vec2& gravity);
+		cc::Vec2 getWind() const;
+		void setWind(const cc::Vec2& wind);
 
 		// blinking, lip
 
@@ -148,17 +148,17 @@ namespace l2d
 		std::vector<std::string> partNames;
 		std::vector<int> partParents;
 
-		cocos2d::Color4F hitAreaColor = cocos2d::Color4F(1.0f, 0, 0, 0.2f);
-		cocos2d::Color4F userDataAreaColor = cocos2d::Color4F(0, 0, 1.0f, 0.2f);
-		cocos2d::EventListenerCustom* recreatListener = nullptr;
-		cocos2d::Size canvasSizePixel;
-		cocos2d::Vec2 originPixel;
+		cc::Color4F hitAreaColor = cc::Color4F(1.0f, 0, 0, 0.2f);
+		cc::Color4F userDataAreaColor = cc::Color4F(0, 0, 1.0f, 0.2f);
+		cc::EventListenerCustom* recreatListener = nullptr;
+		cc::Size canvasSizePixel;
+		cc::Vec2 originPixel;
 		float pixelsPerUnit = -1.0f;
-		cocos2d::Mat4 constTransform;
+		cc::Mat4 constTransform;
 		Csm::CubismMatrix44 viewForDraw;
-		std::unordered_map<std::string, cocos2d::Rect> hitBoxes;
+		std::unordered_map<std::string, cc::Rect> hitBoxes;
 		bool enableDebugRect = false;
-		cocos2d::DrawNode* debugRenderer = nullptr;
+		cc::DrawNode* debugRenderer = nullptr;
 		bool autoDragging = false;
 		ccWidgetTouchCallback autoDraggingCallback;
 

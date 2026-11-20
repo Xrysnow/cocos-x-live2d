@@ -206,7 +206,7 @@ private:
     const Csm::CubismId* _idParamEyeBallY;          ///< パラメータID: ParamEyeBallXY
 
     Csm::Rendering::CubismOffscreenFrame_CC  _renderBuffer;  ///< モードによってはCubismOffscreenFrameのテクスチャを描画
-    cocos2d::RenderTexture* _renderSprite;          ///< _renderBufferを描画するスプライト
+    cc::RenderTexture* _renderSprite;          ///< _renderBufferを描画するスプライト
     float _clearColor[4];                           ///< _renderBufferをクリアする際の色
 
 public:
@@ -238,7 +238,7 @@ public:
 private:
 	
     SoundEventHandler _soundHandler;
-	cocos2d::Vector<cocos2d::Texture2D*> _loadedTextures;
+	cc::Vector<cc::Texture2D*> _loadedTextures;
 	Csm::csmBool _lipSync = true;
 	Csm::csmFloat32 _lipValue;
     unsigned int _mocVersion = 0;

@@ -28,7 +28,7 @@ using namespace Csm;
 using namespace Csm::Constant;
 using namespace Csm::DefaultParameterId;
 using namespace LAppDefine;
-using namespace cocos2d;
+using namespace cc;
 
 //TODO: audio
 

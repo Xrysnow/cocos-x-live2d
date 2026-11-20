@@ -7,20 +7,20 @@
 #include <vector>
 
 #include "renderer/backend/gfx/DeviceGFX.h"
-using Type = cocos2d::backend::DeviceGFX::Type;
-using Uniform = cocos2d::backend::DeviceGFX::Uniform;
-using UniformList = cocos2d::backend::DeviceGFX::UniformList;
-using UniformBlock = cocos2d::backend::DeviceGFX::UniformBlock;
-using UniformBlockList = cocos2d::backend::DeviceGFX::UniformBlockList;
-using UniformSamplerTexture = cocos2d::backend::DeviceGFX::UniformSamplerTexture;
-using UniformSamplerTextureList = cocos2d::backend::DeviceGFX::UniformSamplerTextureList;
-using Attribute = cocos2d::backend::DeviceGFX::Attribute;
-using AttributeList = cocos2d::backend::DeviceGFX::AttributeList;
+using Type = cc::backend::DeviceGFX::Type;
+using Uniform = cc::backend::DeviceGFX::Uniform;
+using UniformList = cc::backend::DeviceGFX::UniformList;
+using UniformBlock = cc::backend::DeviceGFX::UniformBlock;
+using UniformBlockList = cc::backend::DeviceGFX::UniformBlockList;
+using UniformSamplerTexture = cc::backend::DeviceGFX::UniformSamplerTexture;
+using UniformSamplerTextureList = cc::backend::DeviceGFX::UniformSamplerTextureList;
+using Attribute = cc::backend::DeviceGFX::Attribute;
+using AttributeList = cc::backend::DeviceGFX::AttributeList;
 
 #define CSM_SAFE_DELETE_NULL(p) do { if(p) {CSM_DELETE(p); p = nullptr;} } while (false)
 
-using namespace cocos2d;
-using namespace cocos2d::backend;
+using namespace cc;
+using namespace cc::backend;
 using namespace Live2D::Cubism::Framework;
 using namespace Live2D::Cubism::Framework::Rendering;
 
@@ -35,8 +35,8 @@ namespace {
 CubismDrawCommand_CC::CubismDrawCommand_CC()
 {
 	_command.init(0.0);
-	_command.setDrawType(cocos2d::CustomCommand::DrawType::ELEMENT);
-	_command.setPrimitiveType(cocos2d::CustomCommand::PrimitiveType::TRIANGLE);
+	_command.setDrawType(cc::CustomCommand::DrawType::ELEMENT);
+	_command.setPrimitiveType(cc::CustomCommand::PrimitiveType::TRIANGLE);
 }
 
 CubismDrawCommand_CC::~CubismDrawCommand_CC()
@@ -52,13 +52,13 @@ void CubismDrawCommand_CC::CreateVertexBuffer(csmSizeInt stride, csmSizeInt coun
 	if (_drawBuffer)
 		CSM_FREE(_drawBuffer);
 	_drawBuffer = static_cast<csmUint8*>(CSM_MALLOC(_vbSize));
-	_command.createVertexBuffer(stride, count, cocos2d::CustomCommand::BufferUsage::DYNAMIC);
+	_command.createVertexBuffer(stride, count, cc::CustomCommand::BufferUsage::DYNAMIC);
 }
 
 void CubismDrawCommand_CC::CreateIndexBuffer(csmSizeInt count)
 {
-	_command.createIndexBuffer(cocos2d::backend::IndexFormat::U_SHORT, count,
-	                           cocos2d::CustomCommand::BufferUsage::DYNAMIC);
+	_command.createIndexBuffer(cc::backend::IndexFormat::U_SHORT, count,
+	                           cc::CustomCommand::BufferUsage::DYNAMIC);
 }
 
 void CubismDrawCommand_CC::UpdateVertexBuffer(void* data, void* uvData, csmSizeInt count)
@@ -646,7 +646,7 @@ CubismClippingManager_CC* CubismClippingContext_CC::GetClippingManager()
 
 CubismRendererProfile_CC::CubismRendererProfile_CC()
 {
-	ccr = cocos2d::Director::getInstance()->getRenderer();
+	ccr = cc::Director::getInstance()->getRenderer();
 }
 
 void CubismRendererProfile_CC::Save()
@@ -1065,7 +1065,7 @@ void CubismShader_CC::DeleteInstance()
 	}
 }
 
-static cocos2d::backend::Program* LoadGFXProgram(
+static cc::backend::Program* LoadGFXProgram(
 	const std::string& name,
 	const std::string& vs, const std::string& fs,
 	const UniformBlock& vsb, const UniformBlock& fsb,

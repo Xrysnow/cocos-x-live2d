@@ -7,7 +7,7 @@
 #include "cocos2d.h"
 
 using namespace l2d;
-using namespace cocos2d;
+using namespace cc;
 using namespace Csm;
 using namespace Live2D::Cubism::Core;
 
@@ -32,7 +32,7 @@ bool Framework::_init()
 	L2DOption.LoggingLevel = LAppDefine::CubismLoggingLevel;
 	if (!CubismFramework::StartUp(&L2DAllocator, &L2DOption))
 	{
-		cocos2d::log("[L2D] can't start framework");
+		cc::log("[L2D] can't start framework");
 		return false;
 	}
 	CubismFramework::Initialize();
@@ -62,7 +62,7 @@ bool Framework::end()
 	Model::instances.clear();
 	// note: all models should be destructed before this
 	CubismFramework::Dispose();
-	cocos2d::log("[L2D] framework end successfully");
+	cc::log("[L2D] framework end successfully");
 	L2DFrameworkInited = false;
 	L2DFrameworkInitTried = false;
 	return true;

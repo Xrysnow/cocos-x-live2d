@@ -351,7 +351,7 @@ int luaReg_Live2D_l2dModel(lua_State* lua_S)
 {
 	LUA_ENTRY("l2d");
 	LUA_CLS_DEF_BASE(l2d::Model, "Model", "l2d.Model",
-		cocos2d::ui::Widget, "ccui.Widget",
+		cc::ui::Widget, "ccui.Widget",
 		nullptr, nullptr);
 	LUA_METHOD("addParameter", lua_l2d_Model_addParameter);
 	LUA_METHOD("areaHitTest", lua_l2d_Model_areaHitTest);

@@ -15,14 +15,14 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 
 	class CubismDrawCommand_CC
 	{
-		cocos2d::CustomCommand _command;
+		cc::CustomCommand _command;
 		csmUint8* _drawBuffer = nullptr;
 		csmSizeInt _vbSize = 0;
 	public:
 		CubismDrawCommand_CC();
 		~CubismDrawCommand_CC();
 
-		cocos2d::CustomCommand* GetCommand() { return &_command; }
+		cc::CustomCommand* GetCommand() { return &_command; }
 		void CreateVertexBuffer(csmSizeInt stride, csmSizeInt count);
 		void CreateIndexBuffer(csmSizeInt count);
 		void UpdateVertexBuffer(void* data, void* uvData, csmSizeInt count);
@@ -45,7 +45,7 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 			const csmInt32** drawableMasks, const csmInt32* drawableMaskCounts);
 		void SetupClippingContext(
 			CubismModel& model, CubismRenderer_CC* renderer,
-			const cocos2d::Viewport& lastViewport);
+			const cc::Viewport& lastViewport);
 		CubismClippingContext_CC* FindSameClip(
 			const csmInt32* drawableMasks, csmInt32 drawableMaskCounts) const;
 		void SetupLayoutBounds(csmInt32 usingClipCount) const;
@@ -102,25 +102,25 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 
 		struct CubismShaderSet
 		{
-			cocos2d::backend::Program* ShaderProgram;
+			cc::backend::Program* ShaderProgram;
 			int AttributePositionLocation;
 			int AttributeTexCoordLocation;
-			cocos2d::backend::UniformLocation UniformMatrixLocation;
-			cocos2d::backend::UniformLocation UniformClipMatrixLocation;
-			cocos2d::backend::UniformLocation SamplerTexture0Location;
-			cocos2d::backend::UniformLocation SamplerTexture1Location;
-			cocos2d::backend::UniformLocation UniformBaseColorLocation;
-			cocos2d::backend::UniformLocation UniformMultiplyColorLocation;
-			cocos2d::backend::UniformLocation UniformScreenColorLocation;
-			cocos2d::backend::UniformLocation UnifromChannelFlagLocation;
+			cc::backend::UniformLocation UniformMatrixLocation;
+			cc::backend::UniformLocation UniformClipMatrixLocation;
+			cc::backend::UniformLocation SamplerTexture0Location;
+			cc::backend::UniformLocation SamplerTexture1Location;
+			cc::backend::UniformLocation UniformBaseColorLocation;
+			cc::backend::UniformLocation UniformMultiplyColorLocation;
+			cc::backend::UniformLocation UniformScreenColorLocation;
+			cc::backend::UniformLocation UnifromChannelFlagLocation;
 		};
 
 		CubismShader_CC();
 		virtual ~CubismShader_CC();
 
 		void SetupShaderProgram(CubismRenderer_CC* renderer
-			, cocos2d::PipelineDescriptor* desc
-			, cocos2d::Texture2D* texture
+			, cc::PipelineDescriptor* desc
+			, cc::Texture2D* texture
 			, csmInt32 vertexCount, csmFloat32* vertexArray
 			, csmFloat32* uvArray, csmFloat32 opacity
 			, CubismRenderer::CubismBlendMode colorBlendMode
@@ -144,13 +144,13 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 		void Save();
 		void Restore();
 
-		cocos2d::Renderer* ccr = nullptr;
+		cc::Renderer* ccr = nullptr;
 		bool _lastScissorTest;
 		bool _lastStencilTest;
 		bool _lastDepthTest;
-		cocos2d::backend::CullMode _lastCullFace;
-		cocos2d::backend::Winding _lastWinding;
-		cocos2d::Viewport _lastViewport;
+		cc::backend::CullMode _lastCullFace;
+		cc::backend::Winding _lastWinding;
+		cc::Viewport _lastViewport;
 	};
 
 	class CubismRenderer_CC : public CubismRenderer
@@ -167,7 +167,7 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 
 		void Initialize(CubismModel* model) override;
 		void Initialize(CubismModel* model, csmInt32 maskBufferCount) override;
-		void BindTexture(csmUint32 modelTextureNo, cocos2d::Texture2D* texture);
+		void BindTexture(csmUint32 modelTextureNo, cc::Texture2D* texture);
 		void SetClippingMaskBufferSize(csmFloat32 width, csmFloat32 height);
 		CubismVector2 GetClippingMaskBufferSize() const;
 		CubismOffscreenFrame_CC* GetOffscreenFrame() { return &_offscreenFrameBuffer; }
@@ -206,17 +206,17 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 		CubismClippingContext_CC* GetClippingContextBufferForDraw() const;
 
 	protected:
-		void SetViewPort(const cocos2d::Viewport& value);
+		void SetViewPort(const cc::Viewport& value);
 		void SetViewPort(int x, int y, unsigned int w, unsigned int h);
-		void SetCullMode(cocos2d::backend::CullMode value);
+		void SetCullMode(cc::backend::CullMode value);
 		void AddCallBack(const std::function<void()>& callback);
 		void ClearCommands();
 
 	private:
 		CubismCompositor_CC* _compositor = nullptr;
-		cocos2d::Renderer* ccr = nullptr;
-		std::vector<std::shared_ptr<cocos2d::RenderCommand>> cmds;
-		cocos2d::Map<csmInt32, cocos2d::Texture2D*> _textures;
+		cc::Renderer* ccr = nullptr;
+		std::vector<std::shared_ptr<cc::RenderCommand>> cmds;
+		cc::Map<csmInt32, cc::Texture2D*> _textures;
 		csmVector<csmInt32>        _sortedDrawableIndexList;
 		CubismRendererProfile_CC   _rendererProfile;
 		CubismClippingManager_CC*  _clippingManager;
@@ -224,7 +224,7 @@ namespace Live2D { namespace Cubism {namespace Framework { namespace Rendering {
 		CubismClippingContext_CC*  _clippingContextBufferForDraw;
 		CubismMatrix44             _mvpMatrix;
 		CubismOffscreenFrame_CC    _offscreenFrameBuffer;
-		cocos2d::backend::CullMode _lastCullMode;
+		cc::backend::CullMode _lastCullMode;
 		csmVector<CubismDrawCommand_CC*> _drawableDrawCommandBuffer;
 	};
 

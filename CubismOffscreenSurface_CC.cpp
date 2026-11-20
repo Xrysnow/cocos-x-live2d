@@ -5,7 +5,7 @@
 #include "renderer/backend/RenderTarget.h"
 #endif // CC_VERSION
 
-using namespace cocos2d;
+using namespace cc;
 using namespace Live2D::Cubism::Framework;
 using namespace Live2D::Cubism::Framework::Rendering;
 
@@ -57,7 +57,7 @@ void CubismOffscreenFrame_CC::Clear(float r, float g, float b, float a)
 csmBool CubismOffscreenFrame_CC::CreateOffscreenFrame(
 	csmUint32 displayBufferWidth, csmUint32 displayBufferHeight, RenderTexture* renderTexture)
 {
-    cc::IntrusivePtr<cocos2d::RenderTexture> newRenderTexture;
+    cc::IntrusivePtr<cc::RenderTexture> newRenderTexture;
 	DestroyOffscreenFrame();
 
 	do
@@ -93,7 +93,7 @@ csmBool CubismOffscreenFrame_CC::CreateOffscreenFrame(
 		_bufferWidth = displayBufferWidth;
 		_bufferHeight = displayBufferHeight;
 #ifdef CC_VERSION
-		_renderTarget = cocos2d::backend::Device::getInstance()->newRenderTarget(TargetBufferFlags::COLOR, _colorBuffer->getBackendTexture());
+		_renderTarget = cc::backend::Device::getInstance()->newRenderTarget(TargetBufferFlags::COLOR, _colorBuffer->getBackendTexture());
 #endif // CC_VERSION
 
 		return true;
